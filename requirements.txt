@@ -6,3 +6,4 @@ google-genai==2.10.0
 prompt_toolkit==3.0.52
 pyperclip==1.11.0
 python-dotenv==1.2.2
+protobuf~=7.35.1
