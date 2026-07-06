@@ -1,0 +1,8 @@
+colorama==0.4.6
+google-api-python-client==2.197.0
+google-auth==2.55.0
+google-auth-oauthlib==1.4.0
+google-genai==2.10.0
+prompt_toolkit==3.0.52
+pyperclip==1.11.0
+python-dotenv==1.2.2
