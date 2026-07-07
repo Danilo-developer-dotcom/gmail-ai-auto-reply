@@ -28,8 +28,12 @@ for conversa in reversed(conversas):
     resposta_ia = agente.gerar_resposta(assunto, hist_f)
 
     exibicao(historico)
-    print(Back.BLUE + f"Resposta gerada por IA:{Style.RESET_ALL}\n")
-    print(Fore.GREEN + resposta_ia)
+    if resposta_ia:
+        print(Back.BLUE + f"Resposta gerada por IA:{Style.RESET_ALL}\n")
+        print(Fore.GREEN + resposta_ia)
+    else:
+        print(Back.BLUE + "Não foi possível gerar uma resposta automática.\n"
+                          "Escolha a opção 3 para tentar novamente ou a opção 4 para responder manualmente.")
 
     while True:
         escolha = menu()
