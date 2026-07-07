@@ -218,5 +218,5 @@ __marimo__/
 .streamlit/secrets.toml
 
 # Credencials and Token
-credentials.json
-token.json
+data/credentials.json
+data/token.json

@@ -11,10 +11,10 @@ class Gemini:
             api_key=Gemini.GEMINI_API_KEY,
         )
 
-        with open('rules.txt', 'r', encoding='utf-8') as arquivo:
+        with open('data/rules.txt', 'r', encoding='utf-8') as arquivo:
             self.regra = arquivo.read()
 
-        with open('politicas.txt', 'r', encoding='utf-8') as arquivo:
+        with open('data/politicas.txt', 'r', encoding='utf-8') as arquivo:
             self.politicas = arquivo.read()
 
     def gerar_resposta(self, assunto, conversa):

@@ -17,8 +17,8 @@ class Gmail:
         # O arquivo token.json armazena o acesso do usuário e atualiza tokens, e é criado automaticamente quando o
         # fluxo de autorização completa pela primeira vez
 
-        if os.path.exists("token.json"):
-            creds = Credentials.from_authorized_user_file("token.json", Gmail.SCOPES)
+        if os.path.exists("data/token.json"):
+            creds = Credentials.from_authorized_user_file("data/token.json", Gmail.SCOPES)
 
         # Se não houver uma credencial (ou não houver valida) disponivel, faça o login do usuário.
         if not creds or not creds.valid:
@@ -26,12 +26,12 @@ class Gmail:
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    "credentials.json", Gmail.SCOPES
+                    "data/credentials.json", Gmail.SCOPES
                 )
                 creds = flow.run_local_server(port=0)
 
             # Salva as credenciais para a próxima execução
-            with open("token.json", "w") as token:
+            with open("data/token.json", "w") as token:
                 token.write(creds.to_json())
 
         # Chama a Gmail API
