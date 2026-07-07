@@ -26,11 +26,12 @@ Este projeto foi desenvolvido em Python para estudar integração com APIs, aute
 5. Envia a conversa completa para o Gemini.
 6. O Gemini gera uma resposta considerando todo o contexto.
 7. O operador decide se:
-   - envia;
-   - copia;
-   - gera outra resposta;
-   - escreve manualmente;
-   - ignora a conversa.
+   - envia a resposta gerada pela IA;
+   - copia a resposta gerada;
+   - gera uma nova resposta;
+   - escreve e envia uma resposta manualmente;
+   - pula a conversa.
+8. Após o envio da resposta ou a decisão de pular a conversa, ela é marcada como lida para evitar novo processamento.
 
 ---
 
@@ -93,7 +94,7 @@ pip install -r requirements.txt
 Crie um arquivo `.env`:
 
 ```
-GEMINI_API_KEY="sua chave aqui"
+GEMINI_API_KEY=sua_api_key_aqui
 ```
 
 ---
@@ -126,7 +127,7 @@ Após concluir todas as configurações, execute o projeto com:
 python main.py
 ```
 
-O sistema buscará automaticamente conversas com mensagens não lidas, gerará uma sugestão de resposta utilizando o Gemini e solicitará uma confirmação antes do envio.
+O sistema buscará automaticamente conversas com mensagens não lidas, gerará uma sugestão de resposta utilizando o Gemini e permitirá ao operador enviá-la, regenerá-la, escrever uma resposta manualmente ou pular a conversa.
 
 ---
 
@@ -168,7 +169,7 @@ Atualmente:
 - suporta apenas mensagens em texto simples (`text/plain`);
 - utiliza Gmail como provedor de e-mail;
 - não realiza consultas em sistemas externos (ERP, CRM, Shopify etc.);
-- depende da revisão humana antes do envio.
+- não realiza o envio automático de respostas; todas as mensagens dependem de confirmação do operador.
 
 ---
 
