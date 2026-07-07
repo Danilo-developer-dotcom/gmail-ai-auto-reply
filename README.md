@@ -1,8 +1,19 @@
-# gmail-ai-auto-reply
+<h1 align="center">
+gmail-ai-auto-reply
+</h1>
 
-Sistema desenvolvido em Python para leitura, análise e resposta semiautomática de e-mails do Gmail utilizando a API do Gmail e a API Gemini.
+[![Python](https://img.shields.io/badge/Python-3.13-blue)](https://www.python.org/)
+[![Gemini](https://img.shields.io/badge/Google-Gemini-orange)](https://ai.google.dev/)
+[![Gmail API](https://img.shields.io/badge/API-Gmail-red)](https://developers.google.com/gmail/api)
+[![OAuth](https://img.shields.io/badge/Auth-OAuth_2.0-green)](https://oauth.net/2/)
+[![Status](https://img.shields.io/badge/Status-Active-success)](https://github.com/Danilo-developer-dotcom/gmail-ai-auto-reply)
+[![Project](https://img.shields.io/badge/Type-Study_Project-lightgrey)](https://github.com/Danilo-developer-dotcom/gmail-ai-auto-reply)
 
-O projeto foi desenvolvido para estudos sobre integração de APIs, OAuth 2.0, engenharia de prompts e automação de atendimento.
+
+Automatize a análise e a sugestão de respostas para e-mails do Gmail utilizando a API do Gemini, mantendo o controle humano antes do envio.
+
+Este projeto foi desenvolvido em Python para estudar integração com APIs, autenticação OAuth 2.0, engenharia de prompts e automação de processos. Ele utiliza a Gmail API para recuperar conversas e a API Gemini para gerar sugestões de resposta contextualizadas.
+
 
 ---
 
@@ -41,7 +52,7 @@ O projeto foi desenvolvido para estudos sobre integração de APIs, OAuth 2.0, e
 ### 1. Clone o projeto
 
 ```bash
-git clone https://github.com/seu-usuario/nome-do-repositorio.git
+git clone https://github.com/Danilo-developer-dotcom/gmail-ai-auto-reply.git
 ```
 
 ---
@@ -106,6 +117,7 @@ Na primeira execução será aberta uma janela do navegador para autenticação.
 Após conceder as permissões, o arquivo `token.json` será criado automaticamente e reutilizado nas próximas execuções.
 
 ---
+
 ## Execução
 
 Após concluir todas as configurações, execute o projeto com:
@@ -122,7 +134,7 @@ O sistema buscará automaticamente conversas com mensagens não lidas, gerará u
 
 O projeto utiliza dois arquivos independentes:
 
-### rules.txt
+### `rules.txt`
 
 Responsável pelo comportamento da IA.
 
@@ -132,7 +144,7 @@ Exemplo:
 - formalidade;
 - estilo de resposta.
 
-### politicas.txt
+### `politicas.txt`
 
 Responsável pelas regras de negócio da empresa.
 
