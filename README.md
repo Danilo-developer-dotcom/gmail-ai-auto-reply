@@ -6,56 +6,6 @@ O projeto foi desenvolvido para estudos sobre integração de APIs, OAuth 2.0, e
 
 ---
 
-## Funcionalidades
-
-- Leitura de e-mails não lidos do Gmail
-- Leitura de conversas completas (threads)
-- Extração automática do texto das mensagens
-- Geração de respostas utilizando o Google Gemini
-- Resposta diretamente na mesma conversa do Gmail
-- Interface em terminal para revisão das respostas antes do envio
-- Possibilidade de:
-  - enviar a resposta gerada;
-  - copiar a resposta para a área de transferência;
-  - gerar uma nova resposta;
-  - responder manualmente;
-  - pular para a próxima conversa.
-
----
-
-## Tecnologias utilizadas
-
-- Python
-- Gmail API
-- Google OAuth 2.0
-- Google Gemini API
-- Google API Client
-- Prompt Toolkit
-- Colorama
-- Python Dotenv
-
----
-
-## Estrutura do projeto
-
-```
-.
-├── src/
-│   ├── gmail_con.py
-│   ├── ia.py
-│   ├── utils.py
-│   └── main.py
-│
-├── politicas.txt
-├── rules.txt
-├── requirements.txt
-├── .env
-├── credentials.json
-└── token.json
-```
-
----
-
 ## Como funciona
 
 1. O sistema autentica o usuário utilizando OAuth 2.0.
@@ -70,6 +20,19 @@ O projeto foi desenvolvido para estudos sobre integração de APIs, OAuth 2.0, e
    - gera outra resposta;
    - escreve manualmente;
    - ignora a conversa.
+
+---
+
+## Tecnologias utilizadas
+
+- Python
+- Gmail API
+- Google OAuth 2.0
+- Google Gemini API
+- Google API Client
+- Prompt Toolkit
+- Colorama
+- Python Dotenv
 
 ---
 
@@ -116,10 +79,10 @@ pip install -r requirements.txt
 
 ### 4. Configure a API Gemini
 
-Crie um arquivo `.env`
+Crie um arquivo `.env`:
 
 ```
-GEMINI_API_KEY=SUA_CHAVE_AQUI
+GEMINI_API_KEY="sua chave aqui"
 ```
 
 ---
@@ -140,26 +103,9 @@ Passos:
 
 Na primeira execução será aberta uma janela do navegador para autenticação.
 
-Após o login será criado automaticamente o arquivo:
-
-```
-token.json
-```
+Após o login será criado automaticamente o arquivo `token.json`.
 
 Esse arquivo armazena o token de acesso e não deve ser enviado ao GitHub.
-
----
-
-## Arquivos ignorados
-
-Os seguintes arquivos não devem ser enviados ao GitHub:
-
-```
-credentials.json
-token.json
-.env
-.venv/
-```
 
 ---
 
