@@ -26,6 +26,7 @@ class Gemini:
                    f"Conversa: {conversa}\n"
                    f"Com base em tudo isso, gere sua resposta para o ultimo e-mail")
 
+        #Tenta fazer a requisição de resposta da IA 3 vezes
         tentativas = 3
         while tentativas > 0:
             try:
