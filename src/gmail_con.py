@@ -129,7 +129,7 @@ class Gmail:
 
         return conversas
 
-    def reply(self, email: dict, resposta: str) -> None:
+    def reply(self, conversa: dict, resposta: str) -> None:
 
         """Realiza o envio do e-mail de resposta para o cliente ainda dentro da mesma conversa"""
 
@@ -137,18 +137,18 @@ class Gmail:
         mensagem = EmailMessage()
 
         # destinatário:
-        mensagem["To"] = extrair_remetente(email["remetente"])
+        mensagem["To"] = extrair_remetente(conversa["remetente"])
 
         # assunto
-        assunto = email["assunto"]
+        assunto = conversa["assunto"]
         if not assunto.lower().startswith('re:'):
             assunto = f"Re: {assunto}"
 
         mensagem["Subject"] = assunto
 
         # cabeçalhos responsáveis pelo reply
-        mensagem["In-Reply-To"] = email["messageId"]
-        mensagem["References"] = email["messageId"]
+        mensagem["In-Reply-To"] = conversa["messageId"]
+        mensagem["References"] = conversa["messageId"]
 
         # corpo do email:
         mensagem.set_content(resposta)
@@ -163,6 +163,19 @@ class Gmail:
             userId="me",
             body={
                 "raw": raw,
-                "threadId": email["threadId"]
+                "threadId": conversa["threadId"]
             }
         ).execute()
+
+        self.mark_thread_as_read(conversa)
+
+        return None
+
+    def mark_thread_as_read(self, conversa: dict) -> None:
+        """Altera o Label de toda a conversa para Lida"""
+        self.service.users().threads().modify(
+            userId="me",
+            id=conversa["threadId"],
+            body={"removeLabelIds": ["UNREAD"]}
+        ).execute()
+        return None

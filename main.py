@@ -78,6 +78,7 @@ for conversa in reversed(conversas):
                         continue
 
             case 5:  # Próximo e-mail
+                operador.mark_thread_as_read(conversa)
                 break
 
         print(DIVISOR)
