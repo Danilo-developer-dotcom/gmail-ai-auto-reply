@@ -103,9 +103,18 @@ Passos:
 
 Na primeira execução será aberta uma janela do navegador para autenticação.
 
-Após o login será criado automaticamente o arquivo `token.json`.
+Após conceder as permissões, o arquivo `token.json` será criado automaticamente e reutilizado nas próximas execuções.
 
-Esse arquivo armazena o token de acesso e não deve ser enviado ao GitHub.
+---
+## Execução
+
+Após concluir todas as configurações, execute o projeto com:
+
+```bash
+python main.py
+```
+
+O sistema buscará automaticamente conversas com mensagens não lidas, gerará uma sugestão de resposta utilizando o Gemini e solicitará uma confirmação antes do envio.
 
 ---
 
