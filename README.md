@@ -17,24 +17,6 @@ Este projeto foi desenvolvido em Python para estudar integração com APIs, aute
 
 ---
 
-## Como funciona
-
-1. O sistema autentica o usuário utilizando OAuth 2.0.
-2. Busca todas as conversas que possuem mensagens não lidas.
-3. Recupera todo o histórico de cada conversa.
-4. Formata o histórico em texto.
-5. Envia a conversa completa para o Gemini.
-6. O Gemini gera uma resposta considerando todo o contexto.
-7. O operador decide se:
-   - envia a resposta gerada pela IA;
-   - copia a resposta gerada;
-   - gera uma nova resposta;
-   - escreve e envia uma resposta manualmente;
-   - pula a conversa.
-8. Após o envio da resposta ou a decisão de pular a conversa, ela é marcada como lida para evitar novo processamento.
-
----
-
 ## Tecnologias utilizadas
 
 - Python
@@ -47,6 +29,22 @@ Este projeto foi desenvolvido em Python para estudar integração com APIs, aute
 - Python Dotenv
 
 ---
+
+## Funcionalidades
+
+- Leitura de conversas não lidas utilizando a Gmail API
+- Recuperação do histórico completo de cada thread
+- Geração de respostas contextuais com Google Gemini
+- Regras e políticas da IA configuráveis por arquivos externos
+- Envio da resposta preservando a thread original da conversa
+- Regeneração de respostas com IA
+- Resposta manual pelo operador
+- Cópia da resposta para a área de transferência
+- Marcação automática das conversas como lidas
+- Tratamento de falhas temporárias nas APIs com retentativas automáticas
+
+---
+
 
 ## Configuração
 
@@ -111,11 +109,16 @@ Passos:
 2. Ativar a Gmail API.
 3. Criar credenciais OAuth para Desktop.
 4. Baixar o arquivo `credentials.json`.
-5. Colocar o arquivo na raiz do projeto.
+5. Colocar o arquivo dentro da pasta `data/` do projeto.
 
 Na primeira execução será aberta uma janela do navegador para autenticação.
 
-Após conceder as permissões, o arquivo `token.json` será criado automaticamente e reutilizado nas próximas execuções.
+Após conceder as permissões, o arquivo `token.json` será criado em `data/` automaticamente e reutilizado nas próximas execuções.
+
+> **Observação**
+>
+> Os arquivos `credentials.json`, `token.json` e `.env` não fazem parte do repositório por conterem informações sensíveis.
+> Você deverá criar/configurar esses arquivos antes da primeira execução.
 
 ---
 
@@ -173,7 +176,7 @@ Atualmente:
 
 ---
 
-## Objetivos de aprendizado
+## Conceitos praticados
 
 Este projeto foi utilizado para estudar:
 
@@ -191,4 +194,6 @@ Este projeto foi utilizado para estudar:
 
 ## Licença
 
-Projeto desenvolvido exclusivamente para fins de estudo.
+Este projeto foi desenvolvido para fins de estudo e demonstração de integração entre Gmail API e Google Gemini.
+
+Sinta-se à vontade para utilizá-lo como referência, respeitando os termos das APIs utilizadas.
