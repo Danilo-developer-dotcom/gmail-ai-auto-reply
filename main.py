@@ -58,7 +58,7 @@ for conversa in reversed(conversas):
                 resposta_ia = agente.gerar_resposta(assunto, hist_f)
                 print(Back.BLUE + "Nova mensagem gerada!")
                 print(DIVISOR)
-                print(Back.BLUE + f"Resposta gerada por IA:{resposta_ia}\n")
+                print(Back.BLUE + f"Resposta gerada por IA:{Style.RESET_ALL}{Fore.GREEN}{resposta_ia}\n")
                 print(DIVISOR)
                 continue
 
