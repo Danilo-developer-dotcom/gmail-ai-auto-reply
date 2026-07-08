@@ -2,11 +2,16 @@ import os
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 from google_auth_oauthlib.flow import InstalledAppFlow
 from email.message import EmailMessage
 from src.utils import extrair_remetente
 import base64
+import time
 
+class GmailError(Exception):
+    """Erro relacionado com à comunicação com Gmail API."""
+    pass
 
 class Gmail:
     SCOPES = ["https://www.googleapis.com/auth/gmail.modify"]
@@ -37,6 +42,33 @@ class Gmail:
         # Chama a Gmail API
         self.service = build("gmail", "v1", credentials=creds)
 
+    @staticmethod
+    def _executar_requisicao(request, tentativas=3):
+        """Executa requisições Gmail API tratando falhas temporárias"""
+
+        for tentativa in range(tentativas):
+
+            try:
+                return request.execute()
+
+            #Erros temporários na requisição
+            except HttpError as e:
+                status = e.resp.status
+
+                if status in [429, 500, 502, 503, 504]:
+                    print(f"Erro temporário Gmail API ({status}). "
+                          f"Tentativa {tentativa + 1}/{tentativas}")
+                    time.sleep(2 ** tentativa) # aumento progressivo no tempo de espera
+                    continue
+
+                raise GmailError(f"Erro Gmail API: {status} - {e}")
+
+            except Exception as e:
+                raise GmailError(f"Falha inesperada Gmail: {e}") from e # Erro gmail causado por demais Exceptions
+
+        # Se nenhuma tentativa acessar a requisição ou lançar demais Exceptions, interrompemos o fluxo.
+        raise GmailError(f"Não foi possível completar a requisição após {tentativas} tentativas")
+
     def _extrair_texto(self, conteudo):
         """Percorre as partes do email de forma recursiva para encontrar o texto do corpo"""
 
@@ -56,10 +88,11 @@ class Gmail:
 
     def _ler_email(self, msg, thread_id):
         """Faz a leitura dos componentes do e-mail a serem utilizados"""
-        payload = msg["payload"]
+        payload = msg.get("payload", {})
         headers = payload.get("headers", [])
         mensagem = self._extrair_texto(payload)
 
+        # Informações de cada e-mail individual
         email = {
             "id": msg["id"],
             "threadId": thread_id,
@@ -70,9 +103,7 @@ class Gmail:
         }
 
         for header in headers:
-
             match header["name"]:
-
                 case "From":
                     email["remetente"] = header["value"]
                 case "Subject":
@@ -88,10 +119,10 @@ class Gmail:
         conversas = []
 
         # Busca apenas mensagens não lidas
-        resultado = self.service.users().messages().list(
+        resultado = self._executar_requisicao(self.service.users().messages().list(
             userId="me",
             q="is:unread"
-        ).execute()
+        ))
 
         mensagens = resultado.get("messages", [])  # retorna uma lista com todas as mensagens não lidas
 
@@ -102,11 +133,11 @@ class Gmail:
         for thread_id in thread_ids:
 
             # Aqui é a requisição de TODAS as mensagens de uma CONVERSA através do Id da CONVERSA
-            thread = self.service.users().threads().get(
+            thread = self._executar_requisicao(self.service.users().threads().get(
                 userId="me",
                 id=thread_id,
                 format="full"
-            ).execute()
+            ))
 
             historico = []
 
@@ -115,6 +146,10 @@ class Gmail:
                 historico.append(
                     self._ler_email(msg, thread["id"])  # traduz a mensagem para um objeto
                 )
+
+            # Evita erros na variavel "ultima" se o historico estiver vazio
+            if not historico:
+                continue
 
             ultima = historico[-1]
 
@@ -159,13 +194,13 @@ class Gmail:
         ).decode()
 
         # envia mantendo a mesma conversa
-        self.service.users().messages().send(
+        self._executar_requisicao(self.service.users().messages().send(
             userId="me",
             body={
                 "raw": raw,
                 "threadId": conversa["threadId"]
             }
-        ).execute()
+        ))
 
         self.mark_thread_as_read(conversa)
 
@@ -173,9 +208,9 @@ class Gmail:
 
     def mark_thread_as_read(self, conversa: dict) -> None:
         """Altera o Label de toda a conversa para Lida"""
-        self.service.users().threads().modify(
+        self._executar_requisicao(self.service.users().threads().modify(
             userId="me",
             id=conversa["threadId"],
             body={"removeLabelIds": ["UNREAD"]}
-        ).execute()
+        ))
         return None
