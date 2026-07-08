@@ -21,7 +21,7 @@ Este projeto foi desenvolvido em Python para estudar integração com APIs, aute
 
 - Python
 - Gmail API
-- Google OAuth 2.0
+- Google OAuth 2.0 (Gmail API)
 - Google Gemini API
 - Google API Client
 - Prompt Toolkit
@@ -182,8 +182,7 @@ Este projeto foi utilizado para estudar:
 
 - Programação Orientada a Objetos
 - Integração com APIs REST
-- OAuth 2.0
-- Gmail API
+- Integração com OAuth 2.0 para autenticação na Gmail API
 - Google Gemini API
 - Engenharia de Prompts
 - Manipulação de MIME
