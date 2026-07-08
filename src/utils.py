@@ -80,7 +80,7 @@ def exibicao(historico: dict) -> None:
     """Exibe as mensagens do remetente original em vermelho, enquanto as do destinatário em verde
     para a melhor compreensão"""
 
-    print(Back.RED + f"Assunto: {historico[0]['assunto']}\n")
+    print(Back.RED + f"Assunto: {historico[0]['assunto']}{Style.RESET_ALL}\n")
 
     for email in historico:
 
