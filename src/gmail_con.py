@@ -56,9 +56,9 @@ class Gmail:
                 status = e.resp.status
 
                 if status in [429, 500, 502, 503, 504]:
-                    print(f"Erro temporário Gmail API ({status}). "
+                    print(f"Erro temporário Gmail API ({status}).\n"
                           f"Tentativa {tentativa + 1}/{tentativas}")
-                    time.sleep(2 ** tentativa) # aumento progressivo no tempo de espera
+                    time.sleep(2 ** (tentativa + 1)) # aumento progressivo no tempo de espera
                     continue
 
                 raise GmailError(f"Erro Gmail API: {status} - {e}")
