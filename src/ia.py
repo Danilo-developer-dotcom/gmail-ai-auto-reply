@@ -39,11 +39,16 @@ class Gemini:
             except errors.APIError as e:
                 status = e.code
 
-                if status in [429, 500, 502, 503, 504]:
+                if status == 429:
+                    print("Você atingiu o limite de requisições ou a cota permitida pelo seu plano. "
+                          "Tente novamente mais tarde.")
+
+                elif status in [500, 502, 503, 504]:
                     print(f"Erro temporário Gemini API ({status})\n"
                           f"Tentativa {tentativa + 1}/{tentativas}")
                     time.sleep(2 ** (tentativa + 1))  # aumento progressivo no tempo de espera
                     continue
 
-                print(f"Erro Gemini API ({status}): {e}\n")
+                else:
+                    print(f"Erro Gemini API ({status}): {e}\n")
                 return ""
