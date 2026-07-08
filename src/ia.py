@@ -1,7 +1,8 @@
 import time
-
 from google import genai
+from google.genai import errors
 import os
+
 
 class Gemini:
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -14,37 +15,35 @@ class Gemini:
         )
 
         with open('data/rules.txt', 'r', encoding='utf-8') as arquivo:
-            self.regra = arquivo.read()
+            self.rules = arquivo.read()
 
         with open('data/politicas.txt', 'r', encoding='utf-8') as arquivo:
             self.politicas = arquivo.read()
 
-    def gerar_resposta(self, assunto, conversa) -> str:
+    def gerar_resposta(self, assunto, conversa, tentativas=3) -> str:
         """Gera a resposta baseada nas instruções + politicas + contexto"""
 
         formato = (f"Assunto recebido: {assunto}\n"
                    f"Conversa: {conversa}\n"
                    f"Com base em tudo isso, gere sua resposta para o ultimo e-mail")
 
-        #Tenta fazer a requisição de resposta da IA 3 vezes
-        tentativas = 3
-        while tentativas > 0:
+        for tentativa in range(tentativas):
             try:
                 resposta = self.client.models.generate_content(
                     model="gemini-2.5-flash",
-                    contents= self.regra + self.politicas + formato
+                    contents=self.rules + self.politicas + formato
                 )
                 return resposta.text
 
-            except Exception as e:
-                print("Falha ao tentar gerar mensagem")
-                tentativas -= 1
+            # Erros temporários de requisição da Gemini API
+            except errors.APIError as e:
+                status = e.code
 
-                if tentativas == 0:
-                    print(f"Não foi possível acessar a Gemini API: {e}")
-                    return ''
+                if status in [429, 500, 502, 503, 504]:
+                    print(f"Erro temporário Gemini API ({status})\n"
+                          f"Tentativa {tentativa + 1}/{tentativas}")
+                    time.sleep(2 ** (tentativa + 1))  # aumento progressivo no tempo de espera
+                    continue
 
-                print(f"Tentando novamente... {tentativas} tentativa(s) restante(s)")
-                print(f"Aguarde 5 segundos ")
-                time.sleep(5)
-                continue
+                print(f"Erro Gemini API ({status}): {e}\n")
+                return ""
